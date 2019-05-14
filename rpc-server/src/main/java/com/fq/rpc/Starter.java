@@ -1,24 +1,21 @@
 /*
-Date: 05/13,2019, 16:26
+Date: 05/14,2019, 19:51
 */
-package com.fq.rpc.client;
+package com.fq.rpc;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-//@SpringBootApplication
-public class RpcClient implements CommandLineRunner {
-    @Autowired
-    private Client client;
+@SpringBootApplication
+public class Starter implements CommandLineRunner {
 
     public static void main(String[] args) {
-        SpringApplication.run(RpcClient.class, args);
+        SpringApplication.run(Starter.class, args);
     }
 
     @Override
     public void run(String... strings) throws Exception {
-        client.run();
+
     }
 }
