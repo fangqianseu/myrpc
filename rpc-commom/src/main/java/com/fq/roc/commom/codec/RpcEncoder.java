@@ -18,7 +18,7 @@ public class RpcEncoder extends MessageToByteEncoder {
     @Override
     protected void encode(ChannelHandlerContext ctx, Object msg, ByteBuf out) throws Exception {
         if (clazz.isInstance(msg)) {
-            byte[] bytes = SerializationUtil.serialize(msg).getBytes();
+            byte[] bytes = SerializationUtil.serialize(msg);
             out.writeInt(bytes.length);
             out.writeBytes(bytes);
         }

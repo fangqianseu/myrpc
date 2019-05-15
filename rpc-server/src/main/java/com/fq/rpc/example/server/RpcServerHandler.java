@@ -1,7 +1,7 @@
 /*
 Date: 05/14,2019, 19:40
 */
-package com.fq.rpc.server;
+package com.fq.rpc.example.server;
 
 import com.fq.roc.commom.bean.RpcRequest;
 import com.fq.roc.commom.bean.RpcResponse;
@@ -27,7 +27,7 @@ public class RpcServerHandler extends SimpleChannelInboundHandler<RpcRequest> {
     protected void channelRead0(ChannelHandlerContext ctx, RpcRequest rpcRequest) throws Exception {
         RpcResponse rpcResponse = new RpcResponse();
         rpcResponse.setRequestId(rpcRequest.getRequestId());
-        try {
+            try {
             Object result = handle(rpcRequest);
             rpcResponse.setResult(result);
         } catch (Exception e) {

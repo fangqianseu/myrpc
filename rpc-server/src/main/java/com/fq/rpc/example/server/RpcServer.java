@@ -1,4 +1,4 @@
-package com.fq.rpc.server;/*
+package com.fq.rpc.example.server;/*
 Date: 05/13,2019, 16:09
 */
 

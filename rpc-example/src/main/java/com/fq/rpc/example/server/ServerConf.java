@@ -1,11 +1,10 @@
 /*
-Date: 05/14,2019, 20:02
+Date: 05/15,2019, 09:25
 */
-package com.fq.rpc.test;
+package com.fq.rpc.example.server;
 
 import com.fq.rpc.registry.ServiceRegistry;
 import com.fq.rpc.registry.zookeeper.ZookeeperServerRegistry;
-import com.fq.rpc.server.RpcServer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,7 +12,7 @@ import org.springframework.context.annotation.PropertySource;
 
 @Configuration
 @PropertySource({"classpath:user.properties"})
-public class MyConf {
+public class ServerConf {
     @Value("${zookeeper.address}")
     private String zk_address;
     @Value("${zookeeper.session_timeout}")

@@ -55,10 +55,16 @@
             <version>0.10</version>
         </dependency>
         <!--序列化相关-->
+        <!-- Protostuff -->
         <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <version>1.2.47</version>
+            <groupId>com.dyuproject.protostuff</groupId>
+            <artifactId>protostuff-core</artifactId>
+            <version>1.0.9</version>
+        </dependency>
+        <dependency>
+            <groupId>com.dyuproject.protostuff</groupId>
+            <artifactId>protostuff-runtime</artifactId>
+            <version>1.0.9</version>
         </dependency>
 
     </dependencies>
@@ -88,5 +94,6 @@
         <module>rpc-server</module>
         <module>rpc-client</module>
         <module>rpc-registry</module>
+        <module>rpc-example</module>
     </modules>
 </project>
