@@ -1,7 +1,7 @@
 /*
 Date: 05/13,2019, 10:39
 */
-package com.fq.roc.commom.util;
+package com.fq.rpc.commom.util;
 
 import com.dyuproject.protostuff.LinkedBuffer;
 import com.dyuproject.protostuff.ProtostuffIOUtil;

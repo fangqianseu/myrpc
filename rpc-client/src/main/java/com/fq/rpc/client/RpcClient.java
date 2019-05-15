@@ -1,12 +1,12 @@
 /*
 Date: 05/13,2019, 16:26
 */
-package com.fq.rpc.example.client;
+package com.fq.rpc.client;
 
-import com.fq.roc.commom.bean.RpcRequest;
-import com.fq.roc.commom.bean.RpcResponse;
-import com.fq.roc.commom.codec.RpcDecoder;
-import com.fq.roc.commom.codec.RpcEncoder;
+import com.fq.rpc.commom.bean.RpcRequest;
+import com.fq.rpc.commom.bean.RpcResponse;
+import com.fq.rpc.commom.codec.RpcDecoder;
+import com.fq.rpc.commom.codec.RpcEncoder;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;

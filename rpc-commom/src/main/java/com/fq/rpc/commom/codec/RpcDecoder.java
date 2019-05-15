@@ -1,10 +1,10 @@
 /*
 Date: 05/13,2019, 10:45
 */
-package com.fq.roc.commom.codec;
+package com.fq.rpc.commom.codec;
 
 
-import com.fq.roc.commom.util.SerializationUtil;
+import com.fq.rpc.commom.util.SerializationUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;

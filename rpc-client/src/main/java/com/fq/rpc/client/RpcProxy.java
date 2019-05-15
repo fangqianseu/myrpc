@@ -1,10 +1,10 @@
 /*
 Date: 05/15,2019, 08:45
 */
-package com.fq.rpc.example.client;
+package com.fq.rpc.client;
 
-import com.fq.roc.commom.bean.RpcRequest;
-import com.fq.roc.commom.bean.RpcResponse;
+import com.fq.rpc.commom.bean.RpcRequest;
+import com.fq.rpc.commom.bean.RpcResponse;
 import com.fq.rpc.registry.ServiceDiscovery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -5,6 +5,7 @@ package com.fq.rpc.example.server;
 
 import com.fq.rpc.registry.ServiceRegistry;
 import com.fq.rpc.registry.zookeeper.ZookeeperServerRegistry;
+import com.fq.rpc.server.RpcServer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

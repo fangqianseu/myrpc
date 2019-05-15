@@ -1,4 +1,4 @@
-package com.fq.rpc.example.server;
+package com.fq.rpc.server;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

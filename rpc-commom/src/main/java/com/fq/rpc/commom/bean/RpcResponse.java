@@ -1,7 +1,7 @@
 /*
 Date: 05/13,2019, 10:01
 */
-package com.fq.roc.commom.bean;
+package com.fq.rpc.commom.bean;
 
 /**
  * RPC Response相应封装

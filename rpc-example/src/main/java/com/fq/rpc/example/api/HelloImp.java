@@ -3,7 +3,7 @@ Date: 05/15,2019, 09:40
 */
 package com.fq.rpc.example.api;
 
-import com.fq.rpc.example.server.RpcService;
+import com.fq.rpc.server.RpcService;
 import org.springframework.stereotype.Component;
 
 @Component

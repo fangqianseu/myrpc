@@ -3,6 +3,7 @@ Date: 05/15,2019, 09:26
 */
 package com.fq.rpc.example.client;
 
+import com.fq.rpc.client.RpcProxy;
 import com.fq.rpc.example.api.Hello;
 import com.fq.rpc.example.api.Person;
 import com.fq.rpc.registry.zookeeper.ZookeeperServiceDiscovery;

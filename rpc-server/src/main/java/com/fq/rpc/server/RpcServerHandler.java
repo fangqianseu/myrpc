@@ -1,10 +1,10 @@
 /*
 Date: 05/14,2019, 19:40
 */
-package com.fq.rpc.example.server;
+package com.fq.rpc.server;
 
-import com.fq.roc.commom.bean.RpcRequest;
-import com.fq.roc.commom.bean.RpcResponse;
+import com.fq.rpc.commom.bean.RpcRequest;
+import com.fq.rpc.commom.bean.RpcResponse;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import org.slf4j.Logger;
