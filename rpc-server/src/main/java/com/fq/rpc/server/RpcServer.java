@@ -12,6 +12,8 @@ import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
+import io.netty.handler.codec.LengthFieldPrepender;
 import org.jboss.netty.util.internal.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +24,9 @@ import org.springframework.context.ApplicationContextAware;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 public class RpcServer implements ApplicationContextAware, InitializingBean {
     private static final Logger logger = LoggerFactory.getLogger(RpcServer.class);
@@ -30,6 +35,8 @@ public class RpcServer implements ApplicationContextAware, InitializingBean {
     private ServiceRegistry serviceRegistry;
 
     private Map<String, Object> handleMap = new HashMap<>();
+
+    private volatile ThreadPoolExecutor threadPoolExecutor;
 
     public RpcServer(String serviceAddress, ServiceRegistry serviceRegistry) {
         this.serviceAddress = serviceAddress;
@@ -52,9 +59,14 @@ public class RpcServer implements ApplicationContextAware, InitializingBean {
                 @Override
                 public void initChannel(SocketChannel channel) throws Exception {
                     ChannelPipeline pipeline = channel.pipeline();
-                    pipeline.addLast(new RpcDecoder(RpcRequest.class)); // 解码 RPC 请求
-                    pipeline.addLast(new RpcEncoder(RpcResponse.class)); // 编码 RPC 响应
-                    pipeline.addLast(new RpcServerHandler(handleMap)); // 处理 RPC 请求
+                    pipeline
+                            .addLast(new LengthFieldBasedFrameDecoder(65535, 0, 2, 0, 2)) //解决半包
+                            .addLast(new LengthFieldPrepender(2))
+
+                            .addLast(new RpcDecoder(RpcRequest.class))   // request response 编解码
+                            .addLast(new RpcEncoder(RpcResponse.class))
+
+                            .addLast(new RpcServerHandler(handleMap, RpcServer.this)); // 处理 RPC 请求
                 }
             });
 
@@ -95,12 +107,40 @@ public class RpcServer implements ApplicationContextAware, InitializingBean {
         Map<String, Object> serviceBeanMap = applicationContext.getBeansWithAnnotation(RpcService.class);
         if (!serviceBeanMap.isEmpty()) {
             for (Object serviceBean : serviceBeanMap.values()) {
-                RpcService rpcService = serviceBean.getClass().getAnnotation(RpcService.class);
-
-                String serviceName = rpcService.value().getName();
-
+                String serviceName = serviceBean.getClass().getAnnotation(RpcService.class).value().getName();
                 handleMap.put(serviceName, serviceBean);
+                logger.debug("Loading service: {}", serviceName);
             }
         }
+    }
+
+    /**
+     * 手动添加 服务调用
+     *
+     * @param interfaceName
+     * @param serviceBean
+     */
+    public void addService(String interfaceName, Object serviceBean) {
+        if (!handleMap.containsKey(interfaceName)) {
+            logger.info("Add service: {}", interfaceName);
+            handleMap.put(interfaceName, serviceBean);
+        }
+    }
+
+    /**
+     * 提交任务 异步执行
+     *
+     * @param task
+     */
+    public void submit(Runnable task) {
+        if (threadPoolExecutor == null) {
+            synchronized (this) {
+                if (threadPoolExecutor == null) {
+                    threadPoolExecutor = new ThreadPoolExecutor(8, 16, 600L,
+                            TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(65536));
+                }
+            }
+        }
+        threadPoolExecutor.submit(task);
     }
 }
