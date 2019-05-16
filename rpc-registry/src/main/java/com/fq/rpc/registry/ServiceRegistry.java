@@ -9,9 +9,10 @@ package com.fq.rpc.registry;
 public interface ServiceRegistry {
     /**
      * 服务注册函数
-     * @param serviceName 服务名称
+     *
+     * @param serviceName    服务名称
      * @param serviceAddress 服务地址
      * @return
      */
-    boolean register(String serviceName, String serviceAddress);
+    void register(String serviceName, String serviceAddress);
 }

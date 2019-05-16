@@ -5,9 +5,17 @@ package com.fq.rpc.registry;
  */
 public interface ServiceDiscovery {
     /**
+     * 调用服务
      *
-     * @param serviceName 服务名称
+     * @param serviceName
      * @return 服务地址
      */
     String discover(String serviceName);
+
+    /**
+     * 订阅rpc服务
+     *
+     * @param serviceName
+     */
+    void subscribe(String serviceName);
 }
