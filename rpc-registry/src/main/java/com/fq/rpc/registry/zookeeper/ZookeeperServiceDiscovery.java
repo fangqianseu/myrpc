@@ -43,7 +43,7 @@ public class ZookeeperServiceDiscovery implements ServiceDiscovery {
         zkClient.subscribeChildChanges(servicePath, new IZkChildListener() {
             @Override
             public synchronized void handleChildChange(String parentPath, List<String> currentChilds) throws Exception {
-                logger.error(parentPath + "child changed ");
+                logger.error(parentPath + " child changed ");
                 ArrayList<String> list = new ArrayList<>();
 
                 for (String childPath : currentChilds) {
@@ -52,11 +52,19 @@ public class ZookeeperServiceDiscovery implements ServiceDiscovery {
                 }
                 String[] splits = parentPath.split("/");
                 serviceAddressMap.put(splits[splits.length - 1], list);
+
+                subWatcherHandler(list);
             }
         });
 
         // 存储当前节点的服务提供方
         updateList(serviceName);
+        subWatcherHandler(serviceAddressMap.get(serviceName));
+    }
+
+    // 子类继承 编写 serviceAddressMap 改变后的代买
+    protected void subWatcherHandler(List<String> list) {
+
     }
 
     /**

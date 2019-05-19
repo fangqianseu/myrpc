@@ -8,7 +8,6 @@ import com.fq.rpc.commom.bean.RpcResponse;
 import com.fq.rpc.registry.ServiceDiscovery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.util.StringUtils;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -19,12 +18,14 @@ public class RpcProxy {
     private static final Logger logger = LoggerFactory.getLogger(RpcProxy.class);
 
     private ServiceDiscovery serviceDiscovery;
+    private ConnectionManager connectionManager;
 
     public RpcProxy() {
     }
 
-    public RpcProxy(ServiceDiscovery serviceDiscovery) {
+    public RpcProxy(ServiceDiscovery serviceDiscovery, ConnectionManager connectionManager) {
         this.serviceDiscovery = serviceDiscovery;
+        this.connectionManager = connectionManager;
     }
 
     /**
@@ -37,6 +38,8 @@ public class RpcProxy {
      */
     @SuppressWarnings("unchecked")
     public <T> T create(final Class<?> interfaceClass) {
+        if (serviceDiscovery.discover(interfaceClass.getName()).equals(""))
+            serviceDiscovery.subscribe(interfaceClass.getName());
         return (T) Proxy.newProxyInstance(interfaceClass.getClassLoader(),
                 new Class<?>[]{interfaceClass},
                 new RpcProxyInvocationHandler(interfaceClass.getName())
@@ -68,21 +71,23 @@ public class RpcProxy {
                 throw new RuntimeException("server service is empty");
 
             String serviceAddress = serviceDiscovery.discover(serviceName);
+            if (serviceAddress.equals("")) {
+                logger.error("No such address");
+                return null;
+            }
             logger.debug("discover service: {} => {}", serviceName, serviceAddress);
 
-            // 从 RPC 服务地址中解析主机名与端口号
-            String[] array = StringUtils.split(serviceAddress, ":");
-            String host = array[0];
-            int port = Integer.parseInt(array[1]);
-
             // 创建 RPC 客户端对象并发送 RPC 请求
-            RpcClient client = new RpcClient(host, port);
+            RpcClientHandler client = connectionManager.getRpcClient(serviceAddress);
             long time = System.currentTimeMillis();
+
             RpcResponse response = client.send(rpcRequest);
-            logger.debug("time: {}ms", System.currentTimeMillis() - time);
+
+            logger.debug(String.format("Request for {%s}.  time: {%S} ms", response.getRequestId(), System.currentTimeMillis() - time));
 
             if (response == null) {
-                throw new RuntimeException("response is null");
+                return null;
+//                throw new RuntimeException("response is null");
             }
 
             // 返回 RPC 响应结果

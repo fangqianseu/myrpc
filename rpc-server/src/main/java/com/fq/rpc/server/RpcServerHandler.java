@@ -35,6 +35,7 @@ public class RpcServerHandler extends SimpleChannelInboundHandler<RpcRequest> {
      */
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, RpcRequest rpcRequest) {
+        logger.debug("Get request : " + rpcRequest);
         rpcServer.submit(new Runnable() {
             @Override
             public void run() {

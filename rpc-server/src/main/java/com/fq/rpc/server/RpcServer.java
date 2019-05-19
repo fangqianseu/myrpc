@@ -81,7 +81,12 @@ public class RpcServer implements ApplicationContextAware, InitializingBean {
             // 注册 RPC 服务地址
             if (serviceRegistry != null) {
                 for (String interfaceName : handleMap.keySet()) {
-                    serviceRegistry.register(interfaceName, serviceAddress);
+                    try {
+
+                        serviceRegistry.register(interfaceName, serviceAddress);
+                    } catch (Exception e) {
+                        logger.error(e.toString());
+                    }
                     logger.debug("register service: {} => {}", interfaceName, serviceAddress);
                 }
             }
@@ -89,10 +94,10 @@ public class RpcServer implements ApplicationContextAware, InitializingBean {
             logger.debug("server started on port {}", port);
 
             // 异步关闭 RPC 服务器
-            future.channel().closeFuture().sync();
+//            future.channel().closeFuture().sync();
         } finally {
-            workerGroup.shutdownGracefully();
-            bossGroup.shutdownGracefully();
+//            workerGroup.shutdownGracefully();
+//            bossGroup.shutdownGracefully();
         }
     }
 

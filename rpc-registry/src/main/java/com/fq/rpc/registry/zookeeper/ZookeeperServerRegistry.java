@@ -45,7 +45,7 @@ public class ZookeeperServerRegistry implements ServiceRegistry {
         }
     }
 
-    public void close() throws Exception {
+    public void close() {
         if (zkClient != null)
             zkClient.close();
     }

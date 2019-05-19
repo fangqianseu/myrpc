@@ -11,8 +11,6 @@ import com.dyuproject.protostuff.runtime.RuntimeSchema;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static com.dyuproject.protostuff.runtime.RuntimeSchema.getSchema;
-
 /**
  * 采用 protostuff 序列化方式
  */
